@@ -18,6 +18,9 @@ module.exports = async () => {
      */
     callService: async (serviceName, wpmsCtx, options) => {
 
+      if (options.url[0] === '/')
+        options.url = options.url.substr(1);
+
       let url = `http://${serviceName}/${options.url}`;
       if (options.query) {
         url += '?' + Object.keys(options.query).map(key => key + '=' + encodeURIComponent(options.query[key])).join('&');

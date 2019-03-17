@@ -1,6 +1,10 @@
 {
   "name": "wpms2",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "http://devgit.servers.local/Dev/wpms2.git"
+  },
   "description": "",
   "main": "index.js",
   "directories": {
