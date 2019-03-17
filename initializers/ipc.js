@@ -17,15 +17,8 @@ module.exports = async () => {
      * @return {Promise.<*>}
      */
     callService: async (serviceName, wpmsCtx, options) => {
-      const ports = {
-        template: 4000,
-        site: 3000,
-        renderer: 2000
-      };
-      let port = ports[serviceName];
 
-      let url = `http://localhost:${port}${options.url}`;
-
+      let url = `http://${serviceName}/${options.url}`;
       if (options.query) {
         url += '?' + Object.keys(options.query).map(key => key + '=' + encodeURIComponent(options.query[key])).join('&');
       }

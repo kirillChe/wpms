@@ -9,7 +9,10 @@ const middlewares = require('require-all')({
 });
 
 const wpms = _.assign({
-
+  /**
+   *
+   * @return {*}
+   */
   createApp: () => express(),
   /**
    * @param app
@@ -18,8 +21,10 @@ const wpms = _.assign({
    */
   boot: async (app, projectRoot) => {
 
+    const appName = require(projectRoot + '/../package.json').name;
+
     // load configs
-    wpms.configs = await require('./initializers/config')();
+    wpms.configs = await require('./initializers/config')(appName);
 
     // configure ipc
     wpms.ipc = await require('./initializers/ipc')();
