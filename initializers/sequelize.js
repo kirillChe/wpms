@@ -4,12 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 
-module.exports = (projectRoot, config) => {
+module.exports = async (projectRoot, dbConfig) => {
 
-  config.operatorsAliases = false;
-  config.logging = !!process.env.DEBUG ? console.log : false;
+  dbConfig.operatorsAliases = false;
+  dbConfig.logging = !!process.env.DEBUG ? console.log : false;
 
-  let sequelize = new Sequelize(config.database, config.username, config.password, config);
+  let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 
   const db = {
     sequelize,
@@ -18,12 +18,12 @@ module.exports = (projectRoot, config) => {
   };
 
   fs
-    .readdirSync(`${projectRoot}/db/models`)
+    .readdirSync(`${projectRoot}/models`)
     .filter(file => {
       return (file.indexOf('.') !== 0) && (file.slice(-3) === '.js');
     })
     .forEach(file => {
-      const model = sequelize['import'](path.join(`${projectRoot}/db/models`, file));
+      const model = sequelize['import'](path.join(`${projectRoot}/models`, file));
       db[model.name] = model;
     });
 

@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const async = require('async');
 const fs = require('fs');
 const express = require('express');
 
@@ -13,7 +14,43 @@ const wpms = _.assign({
    *
    * @return {*}
    */
-  createApp: () => express(),
+  createApp: () => {
+    const app = express();
+
+    app.start = () => {
+
+      if (app.started)
+        return;
+
+      // @todo - prettify
+      if (!app.ready) {
+
+        app.once('ready', () => {
+          // set the port
+          const port = process.env.PORT || 80;
+          // start the app
+          app.listen(port, () => {
+            console.log(`Server is running on port ${port}`); // eslint-disable-line no-console
+            // emit started event
+            app.started = true;
+            app.emit('started');
+          });
+        });
+      } else {
+        // set the port
+        const port = process.env.PORT || 80;
+        // start the app
+        app.listen(port, () => {
+          console.log(`Server is running on port ${port}`); // eslint-disable-line no-console
+          // emit started event
+          app.started = true;
+          app.emit('started');
+        });
+      }
+    };
+
+    return app;
+  },
   /**
    * @param app
    * @param {String} projectRoot  Directory to use when loading JSON and JavaScript files.
@@ -24,7 +61,7 @@ const wpms = _.assign({
     const appName = require(projectRoot + '/../package.json').name;
 
     // load configs
-    wpms.configs = await require('./initializers/config')(appName);
+    wpms.configs = await require('./initializers/config')(appName, projectRoot);
 
     // configure ipc
     wpms.ipc = await require('./initializers/ipc')();
@@ -34,13 +71,18 @@ const wpms = _.assign({
       app.projectRoot = projectRoot;
       app.wpms = wpms;
 
-      if (fs.existsSync(`${projectRoot}/db`)) {
-        // configure db
-        wpms.db = require('./initializers/db')(projectRoot, wpms.configs.db);
+      if (wpms.configs.db) {
+        app.db = await require(`./initializers/${wpms.configs.db.connector}`)(projectRoot, wpms.configs.db);
       }
 
       // load middlewares
       require('./initializers/middleware')(app, projectRoot);
+
+      // load boot scripts
+      await require('./initializers/boot-scripts')(app, projectRoot);
+
+      app.ready = true;
+      app.emit('ready');
     }
   }
 }, middlewares);

@@ -4,7 +4,7 @@
  * @type {request}
  */
 const request = require('request-promise');
-request.debug = process.env.DEBUG || false;
+// request.debug = process.env.DEBUG || false;
 
 module.exports = async () => {
 
@@ -25,6 +25,8 @@ module.exports = async () => {
       if (options.query) {
         url += '?' + Object.keys(options.query).map(key => key + '=' + encodeURIComponent(options.query[key])).join('&');
       }
+      if (process.env.DEBUG)
+        console.log(decodeURIComponent(url));
 
       let requestOptions = {
         method: options.method,

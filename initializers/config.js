@@ -1,7 +1,12 @@
 const consul = require('consul')({host: 'consul'});
+// const fs = require('fs');
 
 module.exports = async (appName) => {
   return await loadConfigs(appName);
+  // fs.writeFile(projectRoot + '/configs/env.json', JSON.stringify(configs, null, 2), (err) => {
+  //   if (err) throw err;
+  // });
+  // return configs;
 };
 
 function loadConfigs(appName) {

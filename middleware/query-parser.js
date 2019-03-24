@@ -26,6 +26,9 @@ function parse(root) {
         case 'or':
           key = Op.or;
           break;
+        case 'in':
+          key = Op.in;
+          break;
       }
       parsed[key] = parse(value);
     });

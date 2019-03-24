@@ -16,9 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.2",
     "consul": "^0.34.1",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
+    "mongoose": "^5.4.19",
     "mysql2": "^1.6.5",
     "ramda": "^0.26.1",
     "request": "^2.88.0",

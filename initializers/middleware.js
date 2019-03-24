@@ -25,6 +25,10 @@ module.exports = (app, projectRoot) => {
 
   phases.forEach(phase => {
 
+    if (phase === 'routes' && fs.existsSync(`${projectRoot}/configs/routes.js`)) {
+      require(app.projectRoot + '/configs/routes')(app);
+    }
+
     let middlewares = R.keys(middlewareConfig[phase]);
     middlewares.forEach(label => {
       let [module, initFunction] = label.split('#');
