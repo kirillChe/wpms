@@ -1,6 +1,4 @@
 const _ = require('lodash');
-const async = require('async');
-const fs = require('fs');
 const express = require('express');
 
 // load middlewares
@@ -61,7 +59,7 @@ const wpms = _.assign({
     const appName = require(projectRoot + '/../package.json').name;
 
     // load configs
-    wpms.configs = await require('./initializers/config')(appName, projectRoot);
+    wpms.configs = await require('./initializers/config')(appName);
 
     // configure ipc
     wpms.ipc = await require('./initializers/ipc')();

@@ -2,7 +2,6 @@ const R = require('ramda');
 const fs = require('fs');
 
 module.exports = (app, projectRoot) => {
-
   const phases = [
     'initial:before',
     'initial',
@@ -24,13 +23,13 @@ module.exports = (app, projectRoot) => {
   }
 
   phases.forEach(phase => {
-
     if (phase === 'routes' && fs.existsSync(`${projectRoot}/configs/routes.js`)) {
       require(app.projectRoot + '/configs/routes')(app);
     }
 
     let middlewares = R.keys(middlewareConfig[phase]);
     middlewares.forEach(label => {
+
       let [module, initFunction] = label.split('#');
 
       let options = middlewareConfig[phase][label];

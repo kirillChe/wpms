@@ -1,13 +1,13 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-
 module.exports = async (projectRoot, dbConfig) => {
 
+  const fs = require('fs');
+  const path = require('path');
+  const Sequelize = require('sequelize');
+
   dbConfig.operatorsAliases = false;
-  dbConfig.logging = !!process.env.DEBUG ? console.log : false;
+  dbConfig.logging = process.env.DEBUG ? console.log : false;
 
   let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 

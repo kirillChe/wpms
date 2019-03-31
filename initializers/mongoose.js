@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
-
 module.exports = (projectRoot, dbConfig) => {
+
+  const mongoose = require('mongoose');
+
   return new Promise((resolve, reject) => {
 
     let connectionString = `mongodb://${dbConfig.username}:${dbConfig.password}` +

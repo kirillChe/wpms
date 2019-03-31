@@ -2,6 +2,10 @@ const fs = require('fs');
 const async = require('async');
 module.exports = (app, projectRoot) => {
   return new Promise((resolve, reject) => {
+
+    if (!fs.existsSync(`${projectRoot}/boot`))
+      return resolve([]);
+
     const scripts = [];
     fs
       .readdirSync(`${projectRoot}/boot`)
