@@ -1,13 +1,6 @@
-const _ = require('lodash');
 const express = require('express');
 
-// load middlewares
-const middlewares = require('require-all')({
-  dirname: __dirname + '/middleware',
-  map: _.camelCase
-});
-
-const wpms = _.assign({
+const wpms = {
   /**
    *
    * @return {*}
@@ -83,6 +76,6 @@ const wpms = _.assign({
       app.emit('ready');
     }
   }
-}, middlewares);
+};
 
 module.exports = wpms;

@@ -11,11 +11,7 @@ module.exports = async (projectRoot, dbConfig) => {
 
   let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 
-  const db = {
-    sequelize,
-    Sequelize,
-    models: {},
-  };
+  const db = {};
 
   fs
     .readdirSync(`${projectRoot}/models`)
@@ -32,6 +28,9 @@ module.exports = async (projectRoot, dbConfig) => {
       db[modelName].associate(db);
     }
   });
+
+  db.sequelize = sequelize;
+  db.Sequelize = Sequelize;
 
   return db;
 };

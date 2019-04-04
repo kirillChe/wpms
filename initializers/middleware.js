@@ -1,5 +1,11 @@
+const _ = require('lodash');
 const R = require('ramda');
 const fs = require('fs');
+
+const wpmsMiddlewares = require('require-all')({
+  dirname: __dirname + '/../middleware',
+  map: _.camelCase
+});
 
 module.exports = (app, projectRoot) => {
   const phases = [
@@ -37,7 +43,7 @@ module.exports = (app, projectRoot) => {
       if (module === 'wpms' || module.indexOf('./middleware') > -1) {
 
         let middleware = module === 'wpms' ?
-          app.wpms[initFunction] : require(projectRoot + module.replace('./', '/'));
+          wpmsMiddlewares[initFunction] : require(projectRoot + module.replace('./', '/'));
 
         options = JSON.stringify(options) === '{}' ? null : options;
         if (options)
